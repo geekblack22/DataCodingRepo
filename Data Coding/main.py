@@ -8,6 +8,7 @@ goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
 
 #start_equation = "5.255+32+49*15+32+9-5+9+9"
+#store the equations from the excel sheet as strings
 start_equation = str(start[1]).lstrip('[').rstrip(']')
 start_equation_list = list(start_equation)
 
@@ -16,11 +17,11 @@ equation_list = list(equation)
 
 goal_eq = str(goal[27]).lstrip('[').rstrip(']')
 goal_list = list(goal_eq)
+#store number that appears before the operation symbol
 def add_to_before(arr,index,type):
     before = ""
-    
     for i in range(index-1,-1,-1):
-
+        #break out of the loop if another operation symbol is reached
         if (not arr[i].isnumeric() and arr[i] != '.'):
            if(type == "plus" or type == "minus"):
                 if(arr[i] == '*' or arr[i] == '/'):
@@ -45,9 +46,11 @@ def add_to_before(arr,index,type):
             before+=arr[i]
     before = before[::-1]
     return before
+#store number that appears after the operation symbol
 def add_to_after(arr,index,type):
     after = ""
     for i in range(index+1,len(arr),1):
+        #break out of the loop if another operation symbol is reached
         if (not arr[i].isnumeric() and arr[i] != '.'):
             if(type == "plus" or type == "minus"):
                 if(arr[i] == '*' or arr[i] == '/'):
@@ -61,6 +64,7 @@ def add_to_after(arr,index,type):
         else:
             after+=arr[i]
     return after
+#check if single digit numbers are over counted and correct
 def removeAditional(str,num, val):
     for i in range(len(str)):
         if(str[i] == val): 
@@ -72,27 +76,24 @@ def removeAditional(str,num, val):
                 if(str[i +1].isnumeric()):
                     num -= 1    
     return num
+#remove number from operation list if it appears it iis accidently recored multiple times
 def removeDuplicates(str,arr):
-    
+    #store all duplicates in an array
     duplicates = [item for item, count in collections.Counter(arr).items() if count > 1]
     
     #print(duplicates)
     
     duplicate_arr = [None]*len(duplicates)
-  
+    #store how many times a duplicate appears
     for i in range(len(duplicates)):
         duplicate = 0
         for j in range(len(arr)):
             if(arr[j] == duplicates[i]):
-                duplicate +=1
-            
+                duplicate +=1         
         duplicate_arr[i] = duplicate
-  
-    
+    #remove duplicates that were not in the original equation 
     for i in range(len(duplicates)):
-      
         original_num = removeAditional(str,str.count(duplicates[i]),duplicates[i])
-       
         if(original_num < duplicate_arr[i]):
             limit = duplicate_arr[i] - original_num
             removed = 0
@@ -112,7 +113,7 @@ def removeDuplicates(str,arr):
 
 
 
-
+#store numbers in their respective operations list
 def store_operation_list(start_equation):
     multi = []
     sub = []
@@ -224,12 +225,14 @@ def remove_non_numeric(arr):
          if( not arr[i].isnumeric()):
              arr.pop(i)
      return arr
+#remove duplicates from list of all possible operation list
 def remove_duplicates(arr):
     res = []
     for i in arr:
         if i not in res:
             res.append(i)
     return res
+#create list of all possible combinations from addition
 def create_add_list(arr):
         add_vals = []
         for i in range(len(arr)):
@@ -240,7 +243,7 @@ def create_add_list(arr):
                         val = int(val)
                     add_vals.append(str(val))
         return remove_duplicates(add_vals)
-
+#create list of all possible combinations from multiplication
 def create_multi_list(arr):
         multi_vals = []
         for i in range(len(arr)):
@@ -251,6 +254,7 @@ def create_multi_list(arr):
                         val = int(val)
                     multi_vals.append(str(val))
         return remove_duplicates(multi_vals)
+#check if an operation was performed 
 def operation_is_calc(opp_list, start, express):
         start_count = 0
         express_count = 0
