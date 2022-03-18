@@ -1,6 +1,7 @@
 import pandas as pd 
 import numpy as np
 import collections
+import re
 
 problem = pd.read_excel(r'coding_results_world1.xlsx')
 start = pd.DataFrame(problem, columns=['start_state']).to_numpy()
@@ -8,8 +9,8 @@ goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
 test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 
-start = ["2+15+6+3", "7+2+10+8", "10+3+z+7", "10+3+z+7"]
-expression = ["5+15+6", "7+10+10", "10+z+10", "10+10+z"]
+#start = ["2+15+6+3", "7+2+10+8", "10+3+z+7", "10+3+z+7"]
+#expresion = ["5+15+6", "7+10+10", "10+z+10", "10+10+z"]
 
 #start_equation = "5.255+32+49*15+32+9-5+9+9"
 #store the equations from the excel sheet as strings
@@ -299,15 +300,20 @@ def create_div_list(arr):
             return remove_duplicates(div_vals)
 #check if an operation was performed 
 def operation_is_calc(opp_list, start, express):
+        start = start.strip("\'")
+        express = express.strip("\'")
+        start = re.split('\+|-|\*| /', start)
+        express = re.split('\+|-|\*| /', express)
+
         start_count = 0
         express_count = 0
         different = False
         for i in range(len(opp_list)):
-            if(start.find(opp_list[i])  == -1) and (express.find(opp_list[i])  != -1):
+            if(start.count(opp_list[i])  == 0) and (express.count(opp_list[i])  != 0):
                 different = True
-            if(start.find(opp_list[i])  != -1):
+            if(start.count(opp_list[i])  != 0):
                 start_count += 1
-            if(express.find(opp_list[i])  != -1):
+            if(express.count(opp_list[i])  != 0):
                 express_count += 1
         # print(different)
         return express_count != 0  and (express_count != start_count  or different) and len(express) < len(start)
@@ -361,7 +367,7 @@ for i in range(len(response)):
         print("Expression: " + str(expresion[i]).lstrip('[').rstrip(']'))
 
 # test_data = str(test_data[1]).lstrip('[').rstrip(']')
-# print("Accuracy:" + str( (count/float(calc_count)) * 100))
+print("Accuracy:" + str( (count/float(calc_count)) * 100))
 # print("---------------------\n ---------------------")
 # print(test_data)
 # print(response)
