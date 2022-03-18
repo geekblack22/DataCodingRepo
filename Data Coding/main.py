@@ -8,6 +8,9 @@ goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
 test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 
+start = ["2+15+6+3", "7+2+10+8", "10+3+z+7", "10+3+z+7"]
+expression = ["5+15+6", "7+10+10", "10+z+10", "10+10+z"]
+
 #start_equation = "5.255+32+49*15+32+9-5+9+9"
 #store the equations from the excel sheet as strings
  
@@ -334,8 +337,8 @@ for i in range(len(start)):
         response.append("CALC")
     else:
         response.append("N/A")
-start_equation = str(start[32]).lstrip('[').rstrip(']')
-equation = str(expresion[32]).lstrip('[').rstrip(']')
+#start_equation = str(start[32]).lstrip('[').rstrip(']')
+#equation = str(expresion[32]).lstrip('[').rstrip(']')
 add, sub, multi, div = store_operation_list(start_equation)   
 #print(create_sub_list(sub,add))
 response = np.asarray(response)
@@ -358,7 +361,7 @@ for i in range(len(response)):
         print("Expression: " + str(expresion[i]).lstrip('[').rstrip(']'))
 
 # test_data = str(test_data[1]).lstrip('[').rstrip(']')
-print("Accuracy:" + str( (count/float(calc_count)) * 100))
+# print("Accuracy:" + str( (count/float(calc_count)) * 100))
 # print("---------------------\n ---------------------")
 # print(test_data)
 # print(response)
