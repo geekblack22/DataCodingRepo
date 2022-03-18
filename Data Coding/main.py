@@ -2,10 +2,11 @@ import pandas as pd
 import numpy as np
 import collections
 
-problem = pd.read_excel(r'C:\Users\yveder\Documents\2nd_set.xlsx')
+problem = pd.read_excel(r'coding_results_world1.xlsx')
 start = pd.DataFrame(problem, columns=['start_state']).to_numpy()
 goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
+test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 
 #start_equation = "5.255+32+49*15+32+9-5+9+9"
 #store the equations from the excel sheet as strings
@@ -305,7 +306,7 @@ def operation_is_calc(opp_list, start, express):
                 start_count += 1
             if(express.find(opp_list[i])  != -1):
                 express_count += 1
-        print(different)
+        # print(different)
         return express_count != 0  and (express_count != start_count  or different) and len(express) < len(start)
 
 
@@ -316,20 +317,20 @@ for i in range(len(start)):
 
 
     equation = str(expresion[i]).lstrip('[').rstrip(']')
-    is_multi = False
-    is_add = False
-    is_sub = False
-    is_div = False
+    # is_multi = False
+    # is_add = False
+    # is_sub = False
+    # is_div = False
     add, sub, multi, div = store_operation_list(start_equation)
-    if(not (create_multi_list(multi) is None)):
-        is_multi = operation_is_calc(create_multi_list(multi), start_equation,equation)
+    # if(not (create_multi_list(multi) is None)):
+    #     is_multi = operation_is_calc(create_multi_list(multi), start_equation,equation)
     if(not (create_add_list(add) is None)):
         is_add = operation_is_calc(create_add_list(add), start_equation,equation)
-    if(not (create_sub_list(sub,add) is None)):
-        is_sub =  operation_is_calc(create_sub_list(sub,add), start_equation,equation)
-    if(not (create_div_list(div) is None)):
-        is_div = operation_is_calc(create_div_list(div), start_equation,equation)
-    if(is_div or is_add or is_multi or is_sub):
+    # if(not (create_sub_list(sub,add) is None)):
+    #     is_sub =  operation_is_calc(create_sub_list(sub,add), start_equation,equation)
+    # if(not (create_div_list(div) is None)):
+    #     is_div = operation_is_calc(create_div_list(div), start_equation,equation)
+    if (is_add):
         response.append("CALC")
     else:
         response.append("N/A")
@@ -337,7 +338,28 @@ start_equation = str(start[32]).lstrip('[').rstrip(']')
 equation = str(expresion[32]).lstrip('[').rstrip(']')
 add, sub, multi, div = store_operation_list(start_equation)   
 #print(create_sub_list(sub,add))
+response = np.asarray(response)
+count = 0
+calc_count = 0
+for i in range(len(response)):
+    strat = response[i]
+    test_strat = test_data[i]
+    test_strat = str(test_strat).lstrip('[').rstrip(']')
+    test_strat = str(test_strat).lstrip(''' ' ''').rstrip(''' ' ''')
+    if test_strat == "CALC":
+        calc_count += 1
+    if test_strat == strat and test_strat == "CALC":
+        # print('Yay')
+        count += 1
 
-print(response)
-#print(len(response))
+    elif test_strat != strat and test_strat == "CALC": 
+        print("Expected: " + test_strat + "\t" + "Actual: " + strat)
+        print("Start: " + str(start[i]).lstrip('[').rstrip(']'))
+        print("Expression: " + str(expresion[i]).lstrip('[').rstrip(']'))
+
+# test_data = str(test_data[1]).lstrip('[').rstrip(']')
+print("Accuracy:" + str( (count/float(calc_count)) * 100))
+# print("---------------------\n ---------------------")
+# print(test_data)
+# print(response)
 
