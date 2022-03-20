@@ -19,8 +19,10 @@ test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 #equation = str(expresion[1]).lstrip('[').rstrip(']')
 # equation_list = list(equation)
 
+# strip goal equations and put them in single list
 goal_eq = str(goal[27]).lstrip('[').rstrip(']')
 goal_list = list(goal_eq)
+
 #store number that appears before the operation symbol
 def add_to_before(arr,index,type):
     before = ""
@@ -56,6 +58,7 @@ def add_to_before(arr,index,type):
             before+=arr[i]
     before = before[::-1]
     return before
+
 #store number that appears after the operation symbol
 def add_to_after(arr,index,type):
     after = ""
@@ -74,6 +77,7 @@ def add_to_after(arr,index,type):
         else:
             after+=arr[i]
     return after
+
 #check if single digit numbers are over counted and correct
 def removeAditional(str,num, val):
     for i in range(len(str)):
@@ -86,13 +90,11 @@ def removeAditional(str,num, val):
                 if(str[i +1].isnumeric()):
                     num -= 1    
     return num
+
 #remove number from operation list if it appears it iis accidently recored multiple times
 def removeDuplicates(str,arr):
     #store all duplicates in an array
     duplicates = [item for item, count in collections.Counter(arr).items() if count > 1]
-    
-    #print(duplicates)
-    
     duplicate_arr = [None]*len(duplicates)
     #store how many times a duplicate appears
     for i in range(len(duplicates)):
@@ -115,19 +117,15 @@ def removeDuplicates(str,arr):
                         if(arr[j] == duplicates[i]):
                             arr.pop(j)
                             removed += 1
-          
     return arr    
 
-
-
-
-
+# remove non-numeric characters
 def remove_non_numeric(arr):
-   
      for i in range(len(arr)):
          if(not arr[i].isnumeric()):
              arr.pop(i)
      return arr
+
 #store numbers in their respective operations list
 def store_operation_list(start_equation):
     multi = []
@@ -245,6 +243,7 @@ def remove_duplicates(arr):
         if i not in res:
             res.append(i)
     return res
+
 #create list of all possible combinations from addition
 def create_add_list(arr):
         add_vals = []
@@ -256,6 +255,7 @@ def create_add_list(arr):
                         val = int(val)
                     add_vals.append(str(val))
         return remove_duplicates(add_vals)
+
 #create list of all possible combinations from multiplication
 def create_multi_list(arr):
         multi_vals = []
@@ -267,13 +267,13 @@ def create_multi_list(arr):
                         val = int(val)
                     multi_vals.append(str(val))
         return remove_duplicates(multi_vals)
+
 #create list of all possible combinations from subtraction
 def create_sub_list(arr,arr2):
         sub_vals = []
         for i in range(len(arr)):
             for j in range(len(arr)):
                 if(j != i):
-                    
                     val = float(arr[i])+float(arr[j])
                     if(val.is_integer()):
                         val = int(val)
@@ -284,8 +284,9 @@ def create_sub_list(arr,arr2):
                 if(val.is_integer()):
                     val = int(val)
                 sub_vals.append(str(val))
-            
             return remove_duplicates(sub_vals)
+
+# create list of all possible combinations from division
 def create_div_list(arr):
         div_vals = []
         for i in range(len(arr)):
@@ -295,16 +296,14 @@ def create_div_list(arr):
                     if(val.is_integer()):
                         val = int(val)
                     div_vals.append(str(val))
-     
-        
             return remove_duplicates(div_vals)
-#check if an operation was performed 
+
+#check if an operation was performed
 def operation_is_calc(opp_list, start, express):
         start = start.strip("\'")
         express = express.strip("\'")
         start = re.split('\+|-|\*| /', start)
         express = re.split('\+|-|\*| /', express)
-
         start_count = 0
         express_count = 0
         different = False
@@ -315,15 +314,11 @@ def operation_is_calc(opp_list, start, express):
                 start_count += 1
             if(express.count(opp_list[i])  != 0):
                 express_count += 1
-        # print(different)
         return express_count != 0  and (express_count != start_count  or different) and len(express) < len(start)
 
-
-#add = remove_non_numeric(add)
 response = []
 for i in range(len(start)):
     start_equation = str(start[i]).lstrip('[').rstrip(']')
-
 
     equation = str(expresion[i]).lstrip('[').rstrip(']')
     # is_multi = False
@@ -367,7 +362,10 @@ for i in range(len(response)):
         print("Expression: " + str(expresion[i]).lstrip('[').rstrip(']'))
 
 # test_data = str(test_data[1]).lstrip('[').rstrip(']')
+
+# print accuracy of code
 print("Accuracy:" + str( (count/float(calc_count)) * 100))
+
 # print("---------------------\n ---------------------")
 # print(test_data)
 # print(response)
