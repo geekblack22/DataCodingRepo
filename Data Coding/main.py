@@ -11,15 +11,6 @@ goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
 test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 
-start = ["7+2+10+8", "10+3+z+7", "10+3+z+7"]
-expresion = ["7+10+10", "10+z+10", "10+10+z"]
-
-#start_equation = "5.255+32+49*15+32+9-5+9+9"
-#store the equations from the excel sheet as strings
- 
-#start_equation_list = list(start_equation)
-#equation = str(expresion[1]).lstrip('[').rstrip(']')
-# equation_list = list(equation)
 
 # strip goal equations and put them in single list
 goal_eq = str(goal[27]).lstrip('[').rstrip(']')
@@ -140,102 +131,26 @@ def store_operation_list(start_equation):
                     add.append(add_to_before(start_equation,i,"plus"))
                 if(add_to_after(start_equation,i,"plus") != ""):
                     add.append(add_to_after(start_equation,i,"plus"))
-           ## if(i == len(start_equation) - 2):
-               # if(start_equation[i+2].isnumeric()):
-               #    add.append(start_equation[i+2] + start_equation[i+1])
-               # if(start_equation[i-2].isnumeric()):
-                #   add.append(start_equation[i-1] + start_equation[i-2])
-                    
-              #       add.append(add_to_before(start_equation,i))
-                #     add.append(add_to_after(start_equation,i))
-               # else:
-                  # add.append(start_equation[i-1])
-                 #  add.append(start_equation[i+1])
-           # else:
-              #      if(i - 2 > -1):
-                    #     add.append(add_to_before(start_equation,i,"plus"))
-                   #      add.append(add_to_after(start_equation,i,"plus"))
-                         
-                        ##if(start_equation[i-2].isnumeric()):
-                           ## add.append(start_equation[i-2] + start_equation[i-1])
-                       ## else:
-                         ##   add.append(start_equation[i-1])
-                        ##if(start_equation[i+2].isnumeric()):
-                            ##add.append(start_equation[i+1] + start_equation[i+2])
-                       ## else:
-                            ##add.append(start_equation[i+1])
+         
         if(start_equation[i] == '-'):
              
               if(add_to_after(start_equation,i,"minus") != ""):
                    sub.append(add_to_after(start_equation,i,"minus"))
               if(add_to_before(start_equation,i,"minus") != ""):
                    add.append(add_to_before(start_equation,i,"minus"))
-            # if(i == len(start_equation) - 2):
-            #     if(start_equation[i-2].isnumeric()):
-            #         add.append(start_equation[i-1] + start_equation[i-2])
-            #         add.append(start_equation[i-1])
-            #     else:
-            #         add.append(start_equation[i-1])
-            #         add.append(start_equation[i+1])
-            # else:
-            #     if(start_equation[i+2] != '*' or start_equation[i+2] != '/' ):
-            #         if(i - 2 > -1):
-            #             if(start_equation[i-2].isnumeric()):
-            #                 add.append(start_equation[i-2] + start_equation[i-1])
-            #             else:
-            #                 add.append(start_equation[i-1])
-            #             if(start_equation[i+2].isnumeric()):
-            #                 add.append(start_equation[i+1] + start_equation[i+2])
-            #             else:
-            #                 add.append(start_equation[i+1])            
+                    
         if(start_equation[i] == '*'):
             if(add_to_before(start_equation,i,"multi") != ""):
                    multi.append(add_to_before(start_equation,i,"multi"))
             if(add_to_after(start_equation,i,"multi") != ""):
                    multi.append(add_to_after(start_equation,i,"multi"))
-            # if(i == len(start_equation) - 2):
-            #          if(start_equation[i-2] != '/'):
-            #             if(start_equation[i-2].isnumeric()):
-            #                 multi.append(start_equation[i-2] + start_equation[i-1])
-            #                 multi.append(start_equation[i+1])
-            #             else:
-            #                 multi.append(start_equation[i-1])
-            #                 multi.append(start_equation[i+1])
-            # else:    
-            #         if(start_equation[i-2] != '/'):
-            #             if(i - 2 > -1):
-            #                 if(start_equation[i-2].isnumeric()):
-            #                     multi.append(start_equation[i-2] + start_equation[i-1])
-            #                 else:
-            #                     multi.append(start_equation[i-1])
-            #                 if(start_equation[i+2].isnumeric()):
-            #                     multi.append(start_equation[i+1] + start_equation[i+2])
-            #                 else:
-            #                     multi.append(start_equation[i+1])
+        
         if(start_equation[i] == '/'):
             if(add_to_before(start_equation,i,"div") != ""):
                    div.append(add_to_before(start_equation,i,"div"))
             if(add_to_after(start_equation,i,"div") != ""):
                div.append(add_to_after(start_equation,i,"div"))
-            # if(i == len(start_equation) - 2):
-            #          if(start_equation[i-2] != '*'):
-            #             if(start_equation[i-2].isnumeric()):
-            #                 div.append(start_equation[i-2] + start_equation[i-1])
-            #                 div.append(start_equation[i+1])
-            #             else:
-            #                 div.append(start_equation[i-1])
-            #                 div.append(start_equation[i+1])
-            # else:    
-            #         if(start_equation[i-2] != '*'):
-            #             if(i - 2 > -1):
-            #                 if(start_equation[i-2].isnumeric()):
-            #                     div.append(start_equation[i-2] + start_equation[i-1])
-            #                 else:
-            #                     div.append(start_equation[i-1])
-            #                 if(start_equation[i+2].isnumeric()):
-            #                     div.append(start_equation[i+1] + start_equation[i+2])
-            #                 else:
-            #                     div.append(start_equation[i+1])    
+             
     return remove_non_numeric(removeDuplicates(start_equation,add)), remove_non_numeric(removeDuplicates(start_equation,sub)), remove_non_numeric(removeDuplicates(start_equation,multi)),remove_non_numeric(removeDuplicates(start_equation,div))               
 
 #remove duplicates from list of all possible operation list
@@ -310,13 +225,14 @@ def operation_is_calc(opp_list, start, express):
         express_count = 0
         different = False
         for i in range(len(opp_list)):
-            if(start.count(opp_list[i])  == 0) and (express.count(opp_list[i])  != 0):
-                different = True
-            if(start.count(opp_list[i])  != 0):
-                start_count += 1
-            if(express.count(opp_list[i])  != 0):
-                express_count += 1
-        return express_count != 0  and (express_count != start_count  or different) and len(express) < len(start)
+            start_count += start.count(opp_list[i])
+            express_count += express.count(opp_list[i])
+            if not different:
+                different = (start.count(opp_list[i]) == 0 and express.count(opp_list[i]) != 0)
+            # if(start_count  == 0) and (express_count  > 0):
+            #     different = True
+           
+        return start_count < express_count or different
 
 response = []
 for i in range(len(start)):
@@ -366,9 +282,9 @@ for i in range(len(response)):
 # test_data = str(test_data[1]).lstrip('[').rstrip(']')
 
 # print accuracy of code
-#print("Accuracy:" + str( (count/float(calc_count)) * 100))
+print("Accuracy:" + str( (count/float(calc_count)) * 100))
 
 # print("---------------------\n ---------------------")
-# print(test_data)
-# print(response)
+print(test_data)
+print(response)
 
