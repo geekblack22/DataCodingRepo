@@ -3,19 +3,21 @@ import numpy as np
 import collections
 import re
 
+# read in excel files
 problem = pd.read_excel(r'coding_results_world1.xlsx')
+# convert to dataframes
 start = pd.DataFrame(problem, columns=['start_state']).to_numpy()
 goal = pd.DataFrame(problem, columns=['goal_state']).to_numpy()
 expresion = pd.DataFrame(problem, columns=['expression']).to_numpy()
 test_data =  pd.DataFrame(problem, columns=['MATH_\nSTRATEGIES']).to_numpy()
 
-#start = ["2+15+6+3", "7+2+10+8", "10+3+z+7", "10+3+z+7"]
-#expresion = ["5+15+6", "7+10+10", "10+z+10", "10+10+z"]
+start = ["7+2+10+8", "10+3+z+7", "10+3+z+7"]
+expresion = ["7+10+10", "10+z+10", "10+10+z"]
 
 #start_equation = "5.255+32+49*15+32+9-5+9+9"
 #store the equations from the excel sheet as strings
  
- #start_equation_list = list(start_equation)
+#start_equation_list = list(start_equation)
 #equation = str(expresion[1]).lstrip('[').rstrip(']')
 # equation_list = list(equation)
 
@@ -364,7 +366,7 @@ for i in range(len(response)):
 # test_data = str(test_data[1]).lstrip('[').rstrip(']')
 
 # print accuracy of code
-print("Accuracy:" + str( (count/float(calc_count)) * 100))
+#print("Accuracy:" + str( (count/float(calc_count)) * 100))
 
 # print("---------------------\n ---------------------")
 # print(test_data)
